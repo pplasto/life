@@ -31,6 +31,7 @@ class MenuManager
 
         this._mainMenu = new MainMenu();
         this._gameBegin = new GameBegin();
+        this._selectGender = new SelectGender();
     }
 
     public get IsBlocked():boolean
@@ -136,7 +137,7 @@ class MenuStack
 
     public PopAndPush(pushMenu:Menu):boolean
     {
-        if(!this.IsBlocked && this.StackContain(pushMenu))
+        if(!this.IsBlocked && !this.StackContain(pushMenu))
         {
             this._transitionOutMenu = this._stack.pop();
             this._transitionInMenu = pushMenu;
@@ -221,8 +222,8 @@ class MenuStack
 
     public StackContain(menu:Menu):boolean
     {
-        for(var item in this._stack)
-            if(item == menu)return true;
+        for(var i = 0;i<this._stack.length;i++)
+            if(this._stack[i] == menu)return true;
         return false;
     }
 }

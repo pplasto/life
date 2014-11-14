@@ -1,6 +1,6 @@
 var TranslateTween = (function () {
     function TranslateTween(gameObject, initialDelay, showPos, hidePos) {
-        this._tweenTime = 500;
+        this._tweenTime = 300;
         this._gameObject = gameObject;
         this._initialDelay = initialDelay;
         this._showPos = showPos;

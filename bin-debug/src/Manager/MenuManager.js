@@ -6,6 +6,7 @@ var MenuManager = (function () {
         this._dialogueStack = new MenuStack("Dialogue");
         this._mainMenu = new MainMenu();
         this._gameBegin = new GameBegin();
+        this._selectGender = new SelectGender();
     }
     Object.defineProperty(MenuManager, "Instance", {
         get: function () {
@@ -127,7 +128,7 @@ var MenuStack = (function () {
         return false;
     };
     MenuStack.prototype.PopAndPush = function (pushMenu) {
-        if (!this.IsBlocked && this.StackContain(pushMenu)) {
+        if (!this.IsBlocked && !this.StackContain(pushMenu)) {
             this._transitionOutMenu = this._stack.pop();
             this._transitionInMenu = pushMenu;
             this._stack.push(pushMenu);
@@ -191,8 +192,8 @@ var MenuStack = (function () {
         var stackSplice = this._stack.splice(index);
     };
     MenuStack.prototype.StackContain = function (menu) {
-        for (var item in this._stack)
-            if (item == menu)
+        for (var i = 0; i < this._stack.length; i++)
+            if (this._stack[i] == menu)
                 return true;
         return false;
     };

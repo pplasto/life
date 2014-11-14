@@ -32,6 +32,12 @@ class Main extends egret.DisplayObjectContainer
 
     private preLoadOK(callbackThis:any):void
     {
+        var bgr:egret.Shape = new egret.Shape();
+        bgr.graphics.beginFill(0x888888);
+        bgr.graphics.drawRect(0,0,callbackThis.stage.stageWidth,callbackThis.stage.stageHeight);
+        bgr.graphics.endFill();
+        callbackThis.addChild(bgr);
+
         GameManager.Instance.GameRoot = callbackThis;
 
         var menuRoot:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();

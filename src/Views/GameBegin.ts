@@ -21,7 +21,12 @@ class GameBegin extends Menu
 
         this.OnCreateHandle = this.createContent;
 
-        this.OnOpenEndHandle = function() {
+        this.OnOpenBeginHandle = ()=>{
+            this._touchHintLabel.alpha = 0;
+            this._beginTypedLabel.text = "LIFE";
+        };
+
+        this.OnOpenEndHandle = ()=> {
             this._currTime = 0;
             this._typeTextNum = 0;
             this._currTypeTime = 0;
@@ -35,7 +40,7 @@ class GameBegin extends Menu
                 });
         }
 
-        this.OnCloseBeginHandle = function() {
+        this.OnCloseBeginHandle = ()=> {
             egret.Ticker.getInstance().unregister(this.update,this);
         }
     }
@@ -64,53 +69,39 @@ class GameBegin extends Menu
         var stageH:number = egret.MainContext.instance.stage.stageHeight;
 
 //      BackGround
-        var bgr:egret.Shape = new egret.Shape();
-        bgr.graphics.beginFill(0x888888);
-        bgr.graphics.drawRect(0,0,stageW,stageH);
-        bgr.graphics.endFill();
-        this.addChild(bgr);
+//        var bgr:egret.Shape = new egret.Shape();
+//        bgr.graphics.beginFill(0x888888);
+//        bgr.graphics.drawRect(0,0,stageW,stageH);
+//        bgr.graphics.endFill();
+//        bgr.name = "Color BackGround";
+//        this.addChild(bgr);
 
 //        console.log("CreateContent");
-        var beginText:egret.TextField = new egret.TextField();
-        beginText.anchorX = beginText.anchorY = 0.5;
-        beginText.textColor = 0xffffff;
-        beginText.x = stageW/2;
-        beginText.y = stageH/2;
-        beginText.textAlign = egret.HorizontalAlign.CENTER;
-        beginText.size = 20;
-        beginText.text = "LIFE";
-        this.addChild(beginText);
+        this._beginTypedLabel = Utils.CreateLabel("LIFE",stageW/2,stageH/2,20,egret.HorizontalAlign.CENTER,0xffffff,true);
+        this._beginTypedLabel.name = "LIFE Label";
+        this.addChild(this._beginTypedLabel);
+        //this._beginTypedLabel.touchEnabled = true;
 
-        var touchHint:egret.TextField = new egret.TextField();
-        touchHint.anchorX = beginText.anchorY = 0.5;
-        touchHint.textColor = 0xffffff;
-        touchHint.x = stageW/2;
-        touchHint.y = stageH/2 + 50;
-        touchHint.textAlign = egret.HorizontalAlign.CENTER;
-        touchHint.size = 16;
-        touchHint.text = "点击继续";
-        touchHint.alpha = 0;
-        this.addChild(touchHint);
+        this._touchHintLabel = Utils.CreateLabel("点击继续",stageW/2,stageH/2+50,16,egret.HorizontalAlign.CENTER,0xffffff,true);
+        this._touchHintLabel.alpha = 0;
+        this._touchHintLabel.name = "点击继续 Label";
+        this.addChild(this._touchHintLabel);
 
         // transition
         var beginTextTransition:Transition = Transition.FastCreateTranslateTween(
-            beginText,0.2,
+            this._beginTypedLabel,0.2,
             new egret.Point(stageW/2,stageH/2),
             new egret.Point(stageW/2,-20)
         );
         beginTextTransition.SnapHide();
         this._localTransitions.push(beginTextTransition);
 
-        // 保存指针
-        this._beginTypedLabel = beginText;
-        this._touchHintLabel = touchHint;
-
         // 触摸事件
-        this.addEventListener(egret.TouchEvent.TOUCH_END,()=>{
-            console.log("GameBegin touched");
+        this.addEventListener(egret.TouchEvent.TOUCH_TAP,(e:egret.Event)=>{
+            console.log("GameBegin touched: "+e.target.name + " currTarget: "+ e.currentTarget.name);
             this.touchEnabled = false;
             egret.Tween.get(this._touchHintLabel).to({"alpha":0},500);
-            // MenuManager.Instance.PopAndPush(MenuManager.Instance.MainMenu);
+            MenuManager.Instance.Push(MenuManager.Instance.SelectGenderMenu);
         },this);
     }
 

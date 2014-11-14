@@ -30,6 +30,11 @@ var Main = (function (_super) {
         ResLoadManager.GetInstance().GameLoading(this, this.preLoadOK, this);
     };
     Main.prototype.preLoadOK = function (callbackThis) {
+        var bgr = new egret.Shape();
+        bgr.graphics.beginFill(0x888888);
+        bgr.graphics.drawRect(0, 0, callbackThis.stage.stageWidth, callbackThis.stage.stageHeight);
+        bgr.graphics.endFill();
+        callbackThis.addChild(bgr);
         GameManager.Instance.GameRoot = callbackThis;
         var menuRoot = new egret.DisplayObjectContainer();
         callbackThis.addChild(menuRoot);

@@ -7,24 +7,28 @@ var __extends = this.__extends || function (d, b) {
 var GameBegin = (function (_super) {
     __extends(GameBegin, _super);
     function GameBegin() {
+        var _this = this;
         _super.call(this);
         this._tempText = "你的人生开始了...";
         this.name = "GameBegin";
         this.Parent = GameManager.Instance.MenuRoot;
         this.OnCreateHandle = this.createContent;
+        this.OnOpenBeginHandle = function () {
+            _this._touchHintLabel.alpha = 0;
+            _this._beginTypedLabel.text = "LIFE";
+        };
         this.OnOpenEndHandle = function () {
-            var _this = this;
-            this._currTime = 0;
-            this._typeTextNum = 0;
-            this._currTypeTime = 0;
-            this._isTypeFlash = false;
-            egret.Tween.get(this).wait(1000).call(function () {
+            _this._currTime = 0;
+            _this._typeTextNum = 0;
+            _this._currTypeTime = 0;
+            _this._isTypeFlash = false;
+            egret.Tween.get(_this).wait(1000).call(function () {
                 _this._beginTypedLabel.text = "";
                 egret.Ticker.getInstance().register(_this.update, _this);
             });
         };
         this.OnCloseBeginHandle = function () {
-            egret.Ticker.getInstance().unregister(this.update, this);
+            egret.Ticker.getInstance().unregister(_this.update, _this);
         };
     }
     GameBegin.prototype.update = function (frameTime) {
@@ -45,44 +49,31 @@ var GameBegin = (function (_super) {
         var stageW = egret.MainContext.instance.stage.stageWidth;
         var stageH = egret.MainContext.instance.stage.stageHeight;
         //      BackGround
-        var bgr = new egret.Shape();
-        bgr.graphics.beginFill(0x888888);
-        bgr.graphics.drawRect(0, 0, stageW, stageH);
-        bgr.graphics.endFill();
-        this.addChild(bgr);
+        //        var bgr:egret.Shape = new egret.Shape();
+        //        bgr.graphics.beginFill(0x888888);
+        //        bgr.graphics.drawRect(0,0,stageW,stageH);
+        //        bgr.graphics.endFill();
+        //        bgr.name = "Color BackGround";
+        //        this.addChild(bgr);
         //        console.log("CreateContent");
-        var beginText = new egret.TextField();
-        beginText.anchorX = beginText.anchorY = 0.5;
-        beginText.textColor = 0xffffff;
-        beginText.x = stageW / 2;
-        beginText.y = stageH / 2;
-        beginText.textAlign = egret.HorizontalAlign.CENTER;
-        beginText.size = 20;
-        beginText.text = "LIFE";
-        this.addChild(beginText);
-        var touchHint = new egret.TextField();
-        touchHint.anchorX = beginText.anchorY = 0.5;
-        touchHint.textColor = 0xffffff;
-        touchHint.x = stageW / 2;
-        touchHint.y = stageH / 2 + 50;
-        touchHint.textAlign = egret.HorizontalAlign.CENTER;
-        touchHint.size = 16;
-        touchHint.text = "点击继续";
-        touchHint.alpha = 0;
-        this.addChild(touchHint);
+        this._beginTypedLabel = Utils.CreateLabel("LIFE", stageW / 2, stageH / 2, 20, egret.HorizontalAlign.CENTER, 0xffffff, true);
+        this._beginTypedLabel.name = "LIFE Label";
+        this.addChild(this._beginTypedLabel);
+        //this._beginTypedLabel.touchEnabled = true;
+        this._touchHintLabel = Utils.CreateLabel("点击继续", stageW / 2, stageH / 2 + 50, 16, egret.HorizontalAlign.CENTER, 0xffffff, true);
+        this._touchHintLabel.alpha = 0;
+        this._touchHintLabel.name = "点击继续 Label";
+        this.addChild(this._touchHintLabel);
         // transition
-        var beginTextTransition = Transition.FastCreateTranslateTween(beginText, 0.2, new egret.Point(stageW / 2, stageH / 2), new egret.Point(stageW / 2, -20));
+        var beginTextTransition = Transition.FastCreateTranslateTween(this._beginTypedLabel, 0.2, new egret.Point(stageW / 2, stageH / 2), new egret.Point(stageW / 2, -20));
         beginTextTransition.SnapHide();
         this._localTransitions.push(beginTextTransition);
-        // 保存指针
-        this._beginTypedLabel = beginText;
-        this._touchHintLabel = touchHint;
         // 触摸事件
-        this.addEventListener(egret.TouchEvent.TOUCH_END, function () {
-            console.log("GameBegin touched");
+        this.addEventListener(egret.TouchEvent.TOUCH_TAP, function (e) {
+            console.log("GameBegin touched: " + e.target.name + " currTarget: " + e.currentTarget.name);
             _this.touchEnabled = false;
             egret.Tween.get(_this._touchHintLabel).to({ "alpha": 0 }, 500);
-            // MenuManager.Instance.PopAndPush(MenuManager.Instance.MainMenu);
+            MenuManager.Instance.Push(MenuManager.Instance.SelectGenderMenu);
         }, this);
     };
     GameBegin.prototype.typeText = function () {

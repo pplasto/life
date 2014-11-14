@@ -1,6 +1,6 @@
 class TranslateTween implements IMenuTween
 {
-    _tweenTime:number = 500;
+    _tweenTime:number = 300;
     public get TweenTime():number{return this._tweenTime;}
     _initialDelay:number;
     private _showPos:egret.Point;
