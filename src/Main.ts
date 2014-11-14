@@ -48,7 +48,8 @@ class Main extends egret.DisplayObjectContainer
         callbackThis.addChild(dialogueRoot);
         GameManager.Instance.DialogueRoot = dialogueRoot;
 
-        MenuManager.Instance.Push(MenuManager.Instance.GameBeginMenu);
+        //MenuManager.Instance.Push(MenuManager.Instance.GameBeginMenu);
+        MenuManager.Instance.Push(MenuManager.Instance.SelectGenderMenu);
     }
 }
 

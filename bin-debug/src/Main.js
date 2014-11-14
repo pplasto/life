@@ -42,7 +42,8 @@ var Main = (function (_super) {
         var dialogueRoot = new egret.DisplayObjectContainer();
         callbackThis.addChild(dialogueRoot);
         GameManager.Instance.DialogueRoot = dialogueRoot;
-        MenuManager.Instance.Push(MenuManager.Instance.GameBeginMenu);
+        //MenuManager.Instance.Push(MenuManager.Instance.GameBeginMenu);
+        MenuManager.Instance.Push(MenuManager.Instance.SelectGenderMenu);
     };
     return Main;
 })(egret.DisplayObjectContainer);
