@@ -52,8 +52,8 @@ class Main extends egret.DisplayObjectContainer
 //        var showInfo:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
 //        callbackThis.addChild(showInfo);
 
-        //MenuManager.Instance.Push(MenuManager.Instance.GameBeginMenu);
-        MenuManager.Instance.Push(MenuManager.Instance.SelectGenderMenu);
+        MenuManager.Instance.Push(MenuManager.Instance.GameBeginMenu);
+//        MenuManager.Instance.Push(MenuManager.Instance.SelectGenderMenu);
     }
 }
 
