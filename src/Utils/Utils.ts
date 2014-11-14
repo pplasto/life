@@ -18,32 +18,44 @@ class Utils
     public static CreateSimpleButton(text:string,textSize:number,w:number,upColor:number,pressColor:number):egret.Sprite
     {
         var btn:egret.Sprite = new egret.Sprite();
+
         var label:egret.TextField = new egret.TextField();
         label.text = text;
         label.x = w/2;
         label.y = (textSize*1.5)/2;
         label.size = textSize;
-        label.anchorX = 0.5;
-        label.anchorY = 0.5;
+        label.anchorX = label.anchorY = 0.5;
 
-        btn.anchorX = 0.5;
-        btn.anchorY = 0.5;
-        btn.graphics.beginFill(upColor);
-        btn.graphics.drawRect( -w/2,-textSize*1.5/2,w,textSize);
-        btn.graphics.endFill();
+        var bgr:egret.Shape = new egret.Shape();
+        bgr.name = "bgr";
+        bgr.graphics.beginFill(upColor);
+        bgr.graphics.drawRect( 0,0,w,textSize*1.5);
+        bgr.graphics.endFill();
+        bgr.width = w;
+        bgr.height = textSize*1.5;
+//        bgr.anchorX = bgr.anchorY = 0.5;
 
+        btn.addChild(bgr);
         btn.addChild(label);
 
+        btn.anchorX = btn.anchorY = 0.5;
+
         btn.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>{
-            e.target.graphics.beginFill(pressColor);
-            e.target.graphics.drawRect( -w/2,-textSize*1.5/2,w,textSize);
-            e.target.graphics.endFill();
+            var bgr:egret.Shape = e.currentTarget.getChildByName("bgr");
+            bgr.graphics.beginFill(pressColor);
+            bgr.graphics.drawRect( 0,0,w,textSize*1.5);
+            bgr.graphics.endFill();
+            //console.log(e.currentTarget.width + " " + e.currentTarget.height);
         },btn);
-        btn.addEventListener(egret.TouchEvent.TOUCH_END,(e:egret.TouchEvent)=>{
-            e.target.graphics.beginFill(upColor);
-            e.target.graphics.drawRect( -w/2,-textSize*1.5/2,w,textSize);
-            e.target.graphics.endFill();
-        },btn);
+
+        var touchEndEvent:Function = function (e:egret.TouchEvent):void {
+            var _bgr:egret.Shape = <egret.Shape>e.currentTarget.getChildByName("bgr");
+            _bgr.graphics.beginFill(upColor);
+            _bgr.graphics.drawRect(0, 0, w, textSize * 1.5);
+            _bgr.graphics.endFill();
+        };
+        btn.addEventListener(egret.TouchEvent.TOUCH_END,touchEndEvent,btn);
+        btn.addEventListener(egret.TouchEvent.TOUCH_RELEASE_OUTSIDE,touchEndEvent,btn);
 
         btn.touchEnabled = true;
         return btn;

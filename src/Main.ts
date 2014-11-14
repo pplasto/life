@@ -28,6 +28,7 @@ class Main extends egret.DisplayObjectContainer
     {
         this.removeEventListener(egret.Event.ADDED_TO_STAGE,this.onAddToStage,this);
         ResLoadManager.GetInstance().GameLoading(this,this.preLoadOK,this);
+//        this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e:egret.TouchEvent)=>console.log(e.stageX+" "+e.stageY),this);
     }
 
     private preLoadOK(callbackThis:any):void
@@ -47,6 +48,9 @@ class Main extends egret.DisplayObjectContainer
         var dialogueRoot:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
         callbackThis.addChild(dialogueRoot);
         GameManager.Instance.DialogueRoot = dialogueRoot;
+
+//        var showInfo:egret.DisplayObjectContainer = new egret.DisplayObjectContainer();
+//        callbackThis.addChild(showInfo);
 
         //MenuManager.Instance.Push(MenuManager.Instance.GameBeginMenu);
         MenuManager.Instance.Push(MenuManager.Instance.SelectGenderMenu);
